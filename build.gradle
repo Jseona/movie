@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //보안인증(디자인 작업 시에는 생략 후 끝나면 다시 적용)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //타임리프에 보안 적용
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    //타임리프
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //검증
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //웹개발
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //룸북
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    //유틸리티
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    //데이터베이스
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    //서버
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    //테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    //Java8time 타임리프 추가
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time'
+    //레이아웃
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    //맵퍼
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+    //나중에 썸네일 자동 등록 같은 것도 추가 등록 해주기
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
