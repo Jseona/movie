@@ -1,5 +1,6 @@
 package com.example.movie.Service;
 
+import com.example.movie.Constant.Role;
 import com.example.movie.DTO.MemberDTO;
 import com.example.movie.Entity.MemberEntity;
 import com.example.movie.Repository.MemberRepository;
@@ -40,5 +41,26 @@ public class MemberService implements UserDetailsService {
     public void saveMember(MemberDTO memberDTO) throws Exception {
         //암호화 처리
         String password = passwordEncoder.encode(memberDTO.getPassword());
+
+        //MemberEntity에 저장
+        MemberEntity memberEntity = MemberEntity.builder()
+                .email(memberDTO.getEmail())
+                .name(memberDTO.getName())
+                .password(password)
+                .role(Role.USER)
+                .build();
+
+        validateDuplicateMember(memberEntity);
+        memberRepository.save(memberEntity);
+    }
+
+    //이메일 중복 체크
+    private void validateDuplicateMember(MemberEntity memberEntity) {
+        //데이터베이스에서 조회
+        MemberEntity findMember = memberRepository.findByEmail(memberEntity.getEmail());
+
+        if (findMember != null) {
+            throw new IllegalStateException("이미 가입된 회원입니다.");
+        }
     }
 }
