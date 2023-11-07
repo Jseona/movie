@@ -2,6 +2,7 @@ package com.example.movie.Controller;
 
 import com.example.movie.DTO.CommentDTO;
 import com.example.movie.DTO.MovieDTO;
+import com.example.movie.Entity.CommentEntity;
 import com.example.movie.Service.CommentService;
 import com.example.movie.Service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +58,11 @@ public class MovieController {
         MovieDTO movieDTO = movieService.read(id);
         //댓글 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
+        //이메일 전달
 
         model.addAttribute("movieDTO", movieDTO);
         model.addAttribute("commentDTOS", commentDTOS);
+        /*model.addAttribute("commentDTO", commentDTO);*/
 
         return "movie/detail";
     }

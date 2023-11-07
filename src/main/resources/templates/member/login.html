@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<title>Title</title>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">  //th:inline="javascript" == type="text/javascript"
+    //페이지를 브라우저에서 읽었으면(출력했으면) 동작해라
+    $(document).ready(function(){
+        //작업할 내용을 기재
+        //model.addAttribute("errorMessage","오류입니다.") 이런식으로 Controller에서 보내주기
+        let errorMessage = [[${errorMessage}]];  //서버로부터 errorMessage 값을 받아서
+        if (errorMessage != null && errorMessage.length > 0) {  //전달받은 오류메세지가 있으면
+            alert(errorMessage);  //전달받은 오류메세지를 메세지창에 출력
+        }
+    });
+	</script>
+</th:block>
 <body>
+<div layout:fragment="content">  <!--본문구역-->
+	<div class="card">
+		<form th:action="@{/member/login}" method="post" class="container mt-3 mb-3" style="width: 50%">
+			<div class="card">
+				<div class="mb-3 mt-3 ms-3 me-3">
+					<label for="email" class="form-label">Email:</label>
+					<input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+				</div>
+				<div class="mb-3 ms-3 me-3">
+					<label for="password" class="form-label">Password:</label>
+					<input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+				</div>
+				<!--로그인 처리 후 아이디나 비밀번호가 불일치하면 전달받은 메세지를 출력-->
+				<p th:if="${loginErrorMsg}" class="error text-danger ms-3" th:text="${loginErrorMsg}"></p>
+				<button type="submit" class="btn btn-primary mb-3 ms-3 me-3">로그인</button>
 
+				<!--csrf() 페이지 위조방지 적용-->
+				<!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+			</div>
+		</form>
+	</div>
+
+</div>  <!--본문구역 끝-->
 </body>
 </html>

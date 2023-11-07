@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<!--<head>
 	<meta charset="UTF-8">
 	<title>Title</title>
-</head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>-->
 <body>
+<div layout:fragment="content">
+	<!--본문-->
+	<!--범위지정-->
+	<div class="row">
+		<div class="col-lg-2"></div>
+		<div class="col-lg-8">
+			<!--목록(표)-->
+			<div class="container mt-3">
+				<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>번호</th>
+						<th>이미지</th>
+						<th>제목</th>
+						<th>작성일</th>
+						<th>수정일</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="data:${movieDTOS}"> <!--반복처리 Controller에서 전달되는 값을 확인-->
+						<td th:text="${data.id}">1</td>
+						<td><img th:src="|/images/movie/@{${data.img}}|" width="150" height="100"></td>
+						<td><a th:href="@{/movie/detail(id=${data.id})}" th:text="${data.movie}">연습용</a></td>
+						<td th:text="${#temporals.format(data.regDate,'yyyy-MM-dd HH:mm')}">2023-01-01 12:03</td>
+						<td th:text="${#temporals.format(data.modDate,'yyyy-MM-dd HH:mm')}">2023-01-01 12:03</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!--목록끝-->
+			<!--페이지-->
+			<ul class="pagination">
+				<!--startPage가 1번 페이지가 아니면 나타낸다.-->
+				<li class="page-item" th:if="${startPage!=1 && page > 0}"> <!--첫페이지 이동-->
+					<a class="page-link" th:href="@{/movie/list(page=1)}">첫페이지</a>
+				</li>
 
+				<li class="page-item" th:if="${curPage!=1 && page > 0}"> <!--이전페이지 이동-->
+					<a class="page-link" th:href="@{/movie/list(page=${prevPage})}">이전</a>
+				</li>
+
+				<span th:each="page:${#numbers.sequence(startPage, endPage)}"> <!--화면에 해당 페이지번호-->
+                    <li class="page-item" th:if="${page!=curPage && page > 0}"><!--현재페이지가 아니면-->
+                        <a th:href="@{/movie/list(page=${page})}">[[${page}]]</a></li>
+
+                    <li class="page-item active" th:if="${page==curPage && page > 0}"><!--현재페이지 이면-->
+                        <a href="#">[[${page}]]</a></li>
+                </span>
+				<li class="page-item" th:if="${curPage!=lastPage && page > 0}"> <!--다음페이지 이동-->
+					<a class="page-link" th:href="@{/movie/list(page=${nextPage})}">다음</a></li>
+
+				<li class="page-item" th:if="${endPage!=lastPage && page > 0}"> <!--끝페이지 이동-->
+					<a class="page-link" th:href="@{/movie/list(page=${lastPage})}">끝페이지</a>
+				</li>
+			</ul>
+			<!--페이지끝-->
+		</div>
+		<div class="col-lg-2"></div>
+	</div>
+	<!--범위지정끝-->
+</div>
 </body>
 </html>

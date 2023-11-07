@@ -15,7 +15,7 @@ public class MemberServiceTest {
     public void saveMemberTest() throws Exception {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setName("홍길동");
-        memberDTO.setEmail("test2@gmail.com");
+        memberDTO.setEmail("test@gmail.com");
         memberDTO.setPassword("1111");
 
         memberService.saveMember(memberDTO);
